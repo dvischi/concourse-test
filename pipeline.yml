@@ -1,0 +1,109 @@
+---
+#resource_types:
+#- name: ansible
+#  type: docker-image
+#  source:
+#    repository: platformengineering/concourse-ansible-resource
+
+resources:
+#- name: centos-image
+#  type: docker-image
+#  source:
+#    repository: centos
+#    tag: 7
+
+#- name: ansible-playbook
+#  type: git
+#  source:
+#    uri: git@github.com:springerpe/repository.git
+#    branch: master
+#    private_key: <github-private-key>
+#- name: ansible-executor
+#  type: ansible
+#  source:
+#    private_key: <ansible-private-key>
+#    remote_user: ansible
+#    inventory:
+#      hosts:
+#        tissuemaps-servers:
+#        - "localhost"
+
+- name: tm-base-1-image
+  type: docker-image
+  source:
+    #repository: tissuemaps/base
+    repository: liberaligroup/base-1
+    username: liberaligroup
+    password: l1b3r4l1
+
+- name: tm-base-2-image
+  type: docker-image
+  source:
+    #repository: tissuemaps/base
+    repository: liberaligroup/base-2
+    username: liberaligroup
+    password: l1b3r4l1
+
+#- name: tm-database-image
+#  type: docker-image
+#  source:
+#    #repository: tissuemaps/base
+#    repository: liberaligroup/database
+#    username: liberaligroup
+#    password: l1b3r4l1
+
+#- name: centos-systemd-image
+#  type: docker-image
+#  source:
+#    repository: centos/systemd
+
+- name: tm-deploy-playbook
+  type: git
+  source:
+    uri: https://github.com/dvischi/ansible-test.git
+    branch: master
+    #tag_filter: "v0.3.3"
+
+jobs:
+- name: build-cached-base-1-image
+  plan:
+  - task: prepare-base-1-dockerfile
+    file: /home/concourse/pipelines/tissuemaps/common/build-cached-base-1-image.yml
+  - put: tm-base-1-image
+    params:
+      build: workspace
+
+- name: build-cached-base-2-image
+  plan:
+  - get: tm-deploy-playbook
+  - get: tm-base-1-image
+    passed: [build-cached-base-1-image]
+  - task: prepare-base-2-dockerfile
+    file: /home/concourse/pipelines/tissuemaps/common/build-cached-base-2-image.yml
+  - put: tm-base-2-image
+    params:
+      build: workspace
+
+- name: integration-tests
+  plan:
+  - get: tm-base-2-image
+    passed: [build-cached-base-2-image]
+  - task: run-integration-test-1
+    privileged: true  # do we need this line?????????????
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: "mumoshu/dcind", tag: "latest"}
+      run:
+        path: sh
+        args:
+          - -exc
+          - |
+            source /docker-lib.sh
+            start_docker
+            docker ps
+            docker-compose version
+
+            rc=$?
+            exit $rc

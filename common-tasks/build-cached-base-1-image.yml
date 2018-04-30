@@ -1,0 +1,27 @@
+---
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: bash
+
+outputs:
+- name: workspace
+
+run:
+  path: /usr/local/bin/bash
+  args:
+  - -c
+  - |
+    output_dir=workspace
+
+    # this task ONLY creates the Dockerfile without building it!
+    # all paths defined within the Dockerfile are relative to ${output_dir}
+    cat << EOF > "${output_dir}/Dockerfile"
+    FROM centos:7
+    ENV container docker
+    ENV HOME /root
+
+    # Install Ansible
+    RUN yum -y install ansible
+    EOF
