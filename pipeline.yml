@@ -64,22 +64,30 @@ resources:
     branch: master
     #tag_filter: "v0.3.3"
 
+- name: tm-concourse-pipeline
+  type: git
+  source:
+    uri: https://github.com/dvischi/concourse-test.git
+    branch: master
+
 jobs:
 - name: build-cached-base-1-image
   plan:
+  - get: tm-concourse-pipeline
   - task: prepare-base-1-dockerfile
-    file: /home/concourse/pipelines/tissuemaps/common/build-cached-base-1-image.yml
+    file: tm-concourse-pipeline/base-tasks/build-cached-base-1-image.yml
   - put: tm-base-1-image
     params:
       build: workspace
 
 - name: build-cached-base-2-image
   plan:
+  - get: tm-concourse-pipeline
   - get: tm-deploy-playbook
   - get: tm-base-1-image
     passed: [build-cached-base-1-image]
   - task: prepare-base-2-dockerfile
-    file: /home/concourse/pipelines/tissuemaps/common/build-cached-base-2-image.yml
+    file: tm-concourse-pipeline/base-tasks/build-cached-base-2-image.yml
   - put: tm-base-2-image
     params:
       build: workspace

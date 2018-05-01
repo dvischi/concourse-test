@@ -30,7 +30,7 @@ run:
     COPY "${playbook_dir}/" "/tmp/${playbook_dir}/"
 
     # Run Ansible script
-    RUN cd "/tmp/${playbook_dir}/" && ansible-playbook -i hosts site.yml -f 10
+    RUN cd "/tmp/${playbook_dir}/" && ansible-playbook -i hosts -f 10 site.yml --tags "base"
     EOF
 
     cp -R ${playbook_dir}/ ${output_dir}/
