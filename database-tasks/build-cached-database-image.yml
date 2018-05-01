@@ -1,0 +1,36 @@
+---
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: bash
+
+inputs:
+- name: tm-deploy-playbook
+outputs:
+- name: workspace
+
+run:
+  path: /usr/local/bin/bash
+  args:
+  - -c
+  - |
+    playbook_dir=tm-deploy-playbook
+    output_dir=workspace
+
+    # this task ONLY creates the Dockerfile without building it!
+    # all paths defined within the Dockerfile are relative to ${output_dir}
+    cat << EOF > "${output_dir}/Dockerfile"
+    FROM liberaligroup/base
+    ENV container docker
+    ENV HOME /root
+
+    # copy TM-Deploy-Playbook into the Docker container
+    # Note: the build context is in '${output_dir}' wheras the playbook is located at ../tm-deploy-playbook
+    COPY "${playbook_dir}/" "/tmp/${playbook_dir}/"
+
+    # Run Ansible script
+    RUN cd "/tmp/${playbook_dir}/" && ansible-playbook -i hosts -f 10 site.yml --tags "database"
+    EOF
+
+    cp -R ${playbook_dir}/ ${output_dir}/
