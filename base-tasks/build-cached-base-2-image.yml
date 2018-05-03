@@ -21,7 +21,7 @@ run:
     # this task ONLY creates the Dockerfile without building it!
     # all paths defined within the Dockerfile are relative to ${output_dir}
     cat << EOF > "${output_dir}/Dockerfile"
-    FROM liberaligroup/base
+    FROM liberaligroup/base-1
     ENV container docker
     ENV HOME /root
 
