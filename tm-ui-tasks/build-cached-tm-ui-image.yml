@@ -1,0 +1,41 @@
+---
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: bash
+
+inputs:
+- name: tm-deploy-playbook
+#inputs:                   # we could copy over the repository into the docker container -
+#- name: tm-ui-repo        # however, as we'd like to use the Ansible playbook (which already clones the repository for us) we don't have to do so.
+                           # nevertheless, the "build-cached-tm-ui-image" task itself has to depend on the git repository anyway as we'd like to run this task
+                           # automatically if the git repository changed.
+outputs:
+- name: workspace
+
+run:
+  path: /usr/local/bin/bash
+  args:
+  - -c
+  - |
+    playbook_dir=tm-deploy-playbook
+    tm_ui_repo_dir=tm-ui-repo
+    output_dir=workspace
+
+    # this task ONLY creates the Dockerfile without building it!
+    # all paths defined within the Dockerfile are relative to ${output_dir}
+    cat << EOF > "${output_dir}/Dockerfile"
+    FROM liberaligroup/base-2
+    ENV container docker
+    ENV HOME /root
+
+    # copy TM-Deploy-Playbook into the Docker container
+    # Note: the build context is in '${output_dir}' wheras the playbook is located at ../tm-deploy-playbook
+    COPY "${playbook_dir}/" "/tmp/${playbook_dir}/"
+
+    # Run Ansible script
+    RUN cd "/tmp/${playbook_dir}/" && ansible-playbook -i hosts -f 10 site.yml --tags "web-service"
+    EOF
+
+    cp -R ${playbook_dir}/ ${output_dir}/
