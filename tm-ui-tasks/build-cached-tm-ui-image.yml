@@ -20,7 +20,6 @@ run:
   - -c
   - |
     playbook_dir=tm-deploy-playbook
-    tm_ui_repo_dir=tm-ui-repo
     output_dir=workspace
 
     # this task ONLY creates the Dockerfile without building it!
@@ -35,7 +34,7 @@ run:
     COPY "${playbook_dir}/" "/tmp/${playbook_dir}/"
 
     # Run Ansible script
-    RUN cd "/tmp/${playbook_dir}/" && ansible-playbook -i hosts -f 10 site.yml --tags "web-service"
+    RUN cd "/tmp/${playbook_dir}/" && ansible-playbook -i hosts -f 10 site.yml --tags "tm-ui"
     EOF
 
     cp -R ${playbook_dir}/ ${output_dir}/
