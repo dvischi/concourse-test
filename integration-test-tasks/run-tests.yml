@@ -18,7 +18,7 @@ run:
 
     # copy TM-Concourse-Pipeline into the Docker container
     # Note: the build context is in '${output_dir}' wheras the pipeline is located at ../tm-concourse-pipeline
-    COPY "${ci_pipeline_dir}/" "/tmp/${ci_pipeline_dir}/"
+    cp -R "${ci_pipeline_dir}/" "/tmp/${ci_pipeline_dir}/"
 
     # To load the `start_docker` function defined in /docker-lib.sh from the docker image `mumoshu/dcind`
     source /docker-lib.sh
