@@ -1,0 +1,28 @@
+database_service:
+  container_name: tm_database
+  image: liberaligroup/database
+  restart: always
+  ports:
+    - "5432:5432"
+  extra_hosts:
+    - "tm_database:127.0.0.1"
+
+tm_server:
+  container_name: tm_server
+  image: liberaligroup/tm-server
+  restart: always
+  ports:
+    - "8008:8008"
+  links:
+    - tm_database:tm_database
+  extra_hosts:
+    - "tm_server:127.0.0.1"
+
+tm_client:
+  container_name: tm_client
+  image: liberaligroup/tm-client
+  restart: always
+  ports:
+    - "8009:8009"
+  links:
+    - tm_server:tm_server

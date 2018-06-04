@@ -1,0 +1,43 @@
+---
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: mumoshu/dcind
+    tag: latest
+
+inputs:
+- name: tm-concourse-pipeline
+
+run:
+  path: sh
+  args:
+  - -exc
+  - |
+    ci_pipeline_dir=tm-concourse-pipeline
+
+    # copy TM-Concourse-Pipeline into the Docker container
+    # Note: the build context is in '${output_dir}' wheras the pipeline is located at ../tm-concourse-pipeline
+    COPY "${ci_pipeline_dir}/" "/tmp/${ci_pipeline_dir}/"
+
+    # To load the `start_docker` function defined in /docker-lib.sh from the docker image `mumoshu/dcind`
+    source /docker-lib.sh
+    start_docker
+
+    # Print docker/docker-compose information
+    docker info
+    docker-compose version
+
+    # Start test environment
+    cd "/tmp/${ci_pipeline_dir}/integration-test-tasks/fixtures"
+    docker-compose up -d
+
+    # Run tests
+    docker-compose exec tm_client protractor test/protractor.conf.js
+
+    # Teardown test environment
+    rc=$?
+    docker-compose down
+    echo "exit code = $rc "
+    kill %1
+    exit $rc
