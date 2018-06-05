@@ -40,6 +40,9 @@ run:
         sleep 1;
     done;
 
+    #docker logs --tail 50 --follow --timestamps mediawiki_web_1
+    docker logs --tail 50 --timestamps tmclient
+
     # Run tests
     docker exec -t tmclient protractor test/protractor.conf.js
 
