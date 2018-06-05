@@ -1,28 +1,31 @@
-database_service:
-  container_name: tm_database
+# NOTE: docker may not correctly link containers with a non-standard container name (enlisted in all linked container's hosts files as <host-name>).
+#       host name only supports characters (a-z), digits (0-9) and minuses (-), namely NO underline characters; see also RFC606 and RFC608.
+
+tm_database:
+  container_name: tmdatabase
   image: liberaligroup/database
   restart: always
   ports:
     - "5432:5432"
   extra_hosts:
-    - "tm_database:127.0.0.1"
+    - "tmdatabase:127.0.0.1"
 
 tm_server:
-  container_name: tm_server
+  container_name: tmserver
   image: liberaligroup/tm-server
   restart: always
   ports:
     - "8008:8008"
   links:
-    - database_service:tm_database
+    - container_name:tmdatabase
   extra_hosts:
-    - "tm_server:127.0.0.1"
+    - "tmserver:127.0.0.1"
 
 tm_client:
-  container_name: tm_client
+  container_name: tmclient
   image: liberaligroup/tm-client
   restart: always
   ports:
     - "8009:8009"
   links:
-    - tm_server:tm_server
+    - tm_server:tmserver
