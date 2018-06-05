@@ -3,7 +3,8 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: mumoshu/dcind
+    #repository: mumoshu/dcind
+    repository: amidos/dcind
     tag: latest
 
 inputs:
@@ -22,9 +23,9 @@ run:
 
     # To load the `start_docker` function defined in /docker-lib.sh from the docker image `mumoshu/dcind`
     # FIX: error creating aufs mount to /var/lib/docker/aufs/mnt/...: invalid argument (ref: https://github.com/concourse/concourse/issues/1351)
-    #server_args="--data-root /scratch/docker ${server_args}"
-    sed -i 's/docker daemon/dockerd --data-root \/scratch\/docker/g' /docker-lib.sh
+    #sed -i 's/docker daemon/dockerd --data-root \/scratch\/docker/g' /docker-lib.sh
     source /docker-lib.sh
+    #start_docker 3 3
     start_docker
 
     # Print docker/docker-compose information
