@@ -36,7 +36,7 @@ run:
     cd "/tmp/${ci_pipeline_dir}/integration-test-tasks/fixtures"
     docker-compose up -d
 
-    sleep 2
+    sleep 10
 
     # Run tests
     docker-compose exec tm_client protractor test/protractor.conf.js
