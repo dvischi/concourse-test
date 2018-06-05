@@ -17,7 +17,7 @@ tm_server:
   ports:
     - "8008:8008"
   links:
-    - container_name:tmdatabase
+    - tm_database:tmdatabase
   extra_hosts:
     - "tmserver:127.0.0.1"
 
