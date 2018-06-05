@@ -36,10 +36,12 @@ run:
     cd "/tmp/${ci_pipeline_dir}/integration-test-tasks/fixtures"
     docker-compose up -d
 
-    sleep 10
+    until [ "`docker inspect -f {{.State.Running}} tm_client`"=="true" ]; do
+        sleep 1;
+    done;
 
     # Run tests
-    docker-compose exec tm_client protractor test/protractor.conf.js
+    docker exec tm_client protractor test/protractor.conf.js
 
     # Teardown test environment
     rc=$?
