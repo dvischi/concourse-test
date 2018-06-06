@@ -33,7 +33,7 @@ run:
     RUN cd "/tmp/${playbook_dir}/" && ansible-playbook -i hosts -f 10 site.yml --tags "database"
     
     # print log output
-    CMD tail -f /var/lib/pgsql/psql-master.log
+    CMD tail -fn +1 /var/lib/pgsql/psql-master.log
     EOF
 
     cp -R ${playbook_dir}/ ${output_dir}/
