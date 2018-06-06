@@ -31,6 +31,9 @@ run:
 
     # Run Ansible script
     RUN cd "/tmp/${playbook_dir}/" && ansible-playbook -i hosts -f 10 site.yml --tags "database"
+    
+    # TODO: do not use hard coded log-file path
+    CMD tail -f /var/lib/pgsql-9.6/citus-6.2/master/psql-master.log
     EOF
 
     cp -R ${playbook_dir}/ ${output_dir}/
