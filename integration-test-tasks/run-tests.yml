@@ -33,14 +33,19 @@ run:
     docker info
     docker-compose version
 
-    # Start test environment
+    # Strictly speaking, preloading of Docker images is not required.
+    # However, you might want to do this for a couple of reasons:
+    # - If the image comes from a private repository, it is much easier to let Concourse pull it,
+    #   and then pass it through to the task.
+    # - When the image is passed to the task, Concourse can often get the image from its cache.
     cd "/tmp/${ci_pipeline_dir}/integration-test-tasks/fixtures"
-    docker load liberaligroup/database
-    docker load liberaligroup/tm-server
-    docker load liberaligroup/tm-client
+    docker load -i liberaligroup/database
+    docker load -i liberaligroup/tm-server
+    docker load -i liberaligroup/tm-client
 
     docker images
 
+    # Start test environment
     docker-compose ps
     docker-compose up -d tm_database
     docker-compose ps
