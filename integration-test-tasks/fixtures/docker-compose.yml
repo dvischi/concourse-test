@@ -9,6 +9,8 @@ tm_database:
     - "5432:5432"
   extra_hosts:
     - "tmdatabase:127.0.0.1"
+  tty: true
+  stdin_open: true
 
 tm_server:
   container_name: tmserver
@@ -20,6 +22,8 @@ tm_server:
     - tm_database:tmdatabase
   extra_hosts:
     - "tmserver:127.0.0.1"
+  tty: true
+  stdin_open: true
 
 tm_client:
   container_name: tmclient
@@ -29,3 +33,5 @@ tm_client:
     - "8009:8009"
   links:
     - tm_server:tmserver
+  tty: true
+  stdin_open: true
