@@ -35,6 +35,11 @@ run:
 
     # Start test environment
     cd "/tmp/${ci_pipeline_dir}/integration-test-tasks/fixtures"
+    docker load liberaligroup/database
+    docker load liberaligroup/tm-server
+    docker load liberaligroup/tm-client
+
+    docker images
 
     docker-compose ps
     docker-compose up -d tm_database
