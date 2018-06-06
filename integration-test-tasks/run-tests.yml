@@ -35,9 +35,9 @@ run:
     # Start test environment
     cd "/tmp/${ci_pipeline_dir}/integration-test-tasks/fixtures"
 
-    docker-compose up -d tmdatabase
+    docker-compose up -d tm_database
     function dbIsReady() {
-        docker-compose logs tmdatabase | grep "PostgreSQL init process complete"
+        docker-compose logs tm_database | grep "PostgreSQL init process complete"
     }
     until dbIsReady;
     do
@@ -45,22 +45,22 @@ run:
         sleep 1
     done
 
-    docker-compose up -d tmserver
-    until [ "`docker inspect -f {{.State.Running}} tmserver`"=="true" ]; do
+    docker-compose up -d tm_server
+    until [ "$(docker inspect -f {{.State.Running}} $(docker-compose ps -q tm_server))"=="true" ]; do
         sleep 1;
     done;
 
-    docker-compose up -d tmclient
-    until [ "`docker inspect -f {{.State.Running}} tmclient`"=="true" ]; do
+    docker-compose up -d tm_client
+    until [ "$(docker inspect -f {{.State.Running}} $(docker-compose ps -q tm_client))"=="true" ]; do
         sleep 1;
     done;
 
     #docker logs --tail 50 --follow --timestamps mediawiki_web_1
     #docker logs --tail 50 --timestamps tmclient
-    docker logs tmdatabase
-    docker logs tmserver
-    docker logs tmclient
-    docker logs
+    docker-compose logs tm_database
+    docker-compose logs tm_server
+    docker-compose logs tm_client
+    #docker-compose logs
 
     # Run tests
     docker exec -t tmclient protractor test/protractor.conf.js
