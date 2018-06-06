@@ -37,7 +37,9 @@ run:
 
     docker-compose up -d tm_database
     function dbIsReady() {
-        docker-compose logs tm_database 2>&1
+        echo "---"
+        cat $(docker inspect --format='{{.LogPath}}' $(docker-compose ps -q tm_database))
+        #docker-compose logs tm_database 2>&1
         docker-compose logs tm_database | grep "PostgreSQL init process complete"
     }
     until dbIsReady;
