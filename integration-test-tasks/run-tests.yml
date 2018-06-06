@@ -45,8 +45,7 @@ run:
 
     # Start test environment
     docker-compose ps
-    #docker-compose up -d tm_database
-    docker-compose up tm_database
+    docker-compose up -d tm_database
     docker-compose ps
     function dbIsReady() {
         cat $(docker inspect --format='{{.LogPath}}' $(docker-compose ps -q tm_database))
