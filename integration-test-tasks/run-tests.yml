@@ -45,9 +45,9 @@ run:
 
     # Start test environment
     docker-compose ps
-    docker-compose run --rm tm_client ls -ahl /var/lib/pgsql/
-    docker-compose run --rm tm_client ls -ahl /var/lib/pgsql-9.6/citus-6.2/master
-    docker-compose run --rm tm_client ls -ahl /var/lib/pgsql-9.6/citus-6.2/master/pg_log
+    docker-compose run --rm tm_database ls -ahl /var/lib/pgsql/
+    docker-compose run --rm tm_database ls -ahl /var/lib/pgsql-9.6/citus-6.2/master
+    docker-compose run --rm tm_database ls -ahl /var/lib/pgsql-9.6/citus-6.2/master/pg_log
     docker-compose up -d tm_database
     docker-compose ps
     function dbIsReady() {
