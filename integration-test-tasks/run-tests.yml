@@ -80,6 +80,7 @@ run:
 
     # Run tests
     #docker exec -t tmclient protractor test/protractor.conf.js
+    docker-compose run --rm tm_client ping tmserver -c 4
     docker-compose run --rm tm_client protractor test/protractor.conf.js
 
     # Teardown test environment
