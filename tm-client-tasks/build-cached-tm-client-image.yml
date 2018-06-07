@@ -31,6 +31,11 @@ run:
 
     # Run Ansible script
     RUN cd "/tmp/${playbook_dir}/" && ansible-playbook -i hosts -f 10 site.yml --tags "tm-client"
+
+    # Add components required for testing
+    RUN yum -y install nodejs-6.14.0 npm-3.10.10
+    RUN npm install -g protractor
+    
     EOF
 
     cp -R ${playbook_dir}/ ${output_dir}/
