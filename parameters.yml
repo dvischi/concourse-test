@@ -1,0 +1,3 @@
+tm_version: develop
+docker-hub-username: *name*
+docker-hub-password: *password*

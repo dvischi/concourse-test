@@ -3,9 +3,7 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    #repository: mumoshu/dcind
     repository: amidos/dcind
-    #repository: quay.io/cosee-concourse/dind
     tag: latest
 
 inputs:
@@ -26,7 +24,6 @@ run:
     # FIX: error creating aufs mount to /var/lib/docker/aufs/mnt/...: invalid argument (ref: https://github.com/concourse/concourse/issues/1351)
     #sed -i 's/docker daemon/dockerd --data-root \/scratch\/docker/g' /docker-lib.sh
     source /docker-lib.sh
-    #start_docker 3 3
     start_docker
 
     # Print docker/docker-compose information
@@ -44,15 +41,10 @@ run:
     docker images
 
     # Start test environment
-    docker-compose ps
-    #docker-compose run --rm tm_database ls -ahl /var/lib/pgsql/
-    #docker-compose run --rm tm_database ls -ahl /var/lib/pgsql-9.6/citus-6.2/master
-    #docker-compose run --rm tm_database ls -ahl /var/lib/pgsql-9.6/citus-6.2/master/pg_log
+    #docker-compose ps
     docker-compose up -d tm_database
-    docker-compose ps
+    #docker-compose ps
     function dbIsReady() {
-        #cat $(docker inspect --format='{{.LogPath}}' $(docker-compose ps -q tm_database))
-        #docker-compose logs tm_database 2>&1
         docker-compose logs tm_database | grep "database system is ready to accept connections"
     }
     until dbIsReady;
@@ -71,15 +63,10 @@ run:
     #    sleep 1;
     #done;
 
-    #docker logs --tail 50 --follow --timestamps mediawiki_web_1
-    #docker logs --tail 50 --timestamps tmclient
     docker-compose logs tm_database
     docker-compose logs tm_server
-    #docker-compose logs tm_client
-    #docker-compose logs
 
     # Run tests
-    #docker exec -t tmclient protractor test/protractor.conf.js
     docker-compose run --rm tm_client ping tmserver -c 4
     docker-compose run --rm tm_client protractor /tmp/tm-client-repo/test/protractor.conf.js
 

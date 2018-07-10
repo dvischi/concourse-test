@@ -35,3 +35,5 @@ tm_client:
     - tm_server:tmserver
   tty: true
   stdin_open: true
+  volumes:
+    - /home/concourse/data.tissuemaps.org:/data.tissuemaps.org

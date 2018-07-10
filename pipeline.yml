@@ -1,68 +1,73 @@
 ---
-#resource_types:
-#- name: ansible
-#  type: docker-image
-#  source:
-#    repository: platformengineering/concourse-ansible-resource
-
 resources:
-#- name: centos-image
-#  type: docker-image
-#  source:
-#    repository: centos
-#    tag: 7
-
-#- name: ansible-playbook
-#  type: git
-#  source:
-#    uri: git@github.com:springerpe/repository.git
-#    branch: master
-#    private_key: <github-private-key>
-#- name: ansible-executor
-#  type: ansible
-#  source:
-#    private_key: <ansible-private-key>
-#    remote_user: ansible
-#    inventory:
-#      hosts:
-#        tissuemaps-servers:
-#        - "localhost"
-
-- name: tm-base-1-image
+- name: base-1-image
   type: docker-image
   source:
-    #repository: tissuemaps/base
     repository: liberaligroup/base-1
-    username: liberaligroup
-    password: l1b3r4l1
+    username: {{docker-hub-username}}
+    password: {{docker-hub-password}}
 
-- name: tm-base-2-image
+- name: base-2-image
   type: docker-image
   source:
-    #repository: tissuemaps/base
     repository: liberaligroup/base-2
-    username: liberaligroup
-    password: l1b3r4l1
+    username: {{docker-hub-username}}
+    password: {{docker-hub-password}}
 
-#- name: tm-database-image
-#  type: docker-image
-#  source:
-#    #repository: tissuemaps/base
-#    repository: liberaligroup/database
-#    username: liberaligroup
-#    password: l1b3r4l1
+- name: db-service-image
+  type: docker-image
+  source:
+    repository: liberaligroup/database
+    username: {{docker-hub-username}}
+    password: {{docker-hub-password}}
 
-#- name: centos-systemd-image
-#  type: docker-image
-#  source:
-#    repository: centos/systemd
+- name: web-service-image
+  type: docker-image
+  source:
+    repository: liberaligroup/web-service
+    username: {{docker-hub-username}}
+    password: {{docker-hub-password}}
+
+- name: tm-ui-image
+  type: docker-image
+  source:
+    repository: liberaligroup/tm-ui
+    username: {{docker-hub-username}}
+    password: {{docker-hub-password}}
+
+- name: jt-library-image
+  type: docker-image
+  source:
+    repository: liberaligroup/jt-library
+    username: {{docker-hub-username}}
+    password: {{docker-hub-password}}
+
+- name: tm-library-image
+  type: docker-image
+  source:
+    repository: liberaligroup/tm-library
+    username: {{docker-hub-username}}
+    password: {{docker-hub-password}}
+
+- name: tm-server-image
+  type: docker-image
+  source:
+    repository: liberaligroup/tm-server
+    username: {{docker-hub-username}}
+    password: {{docker-hub-password}}
+
+- name: tm-client-image
+  type: docker-image
+  source:
+    repository: liberaligroup/tm-client
+    username: {{docker-hub-username}}
+    password: {{docker-hub-password}}
 
 - name: tm-deploy-playbook
   type: git
   source:
     uri: https://github.com/dvischi/ansible-test.git
     branch: master
-    #tag_filter: "v0.3.3"
 
 - name: tm-concourse-pipeline
   type: git
@@ -70,13 +75,55 @@ resources:
     uri: https://github.com/dvischi/concourse-test.git
     branch: master
 
+- name: tm-ui-repo
+  type: git
+  source:
+    uri: https://github.com/TissueMAPS/TmUi.git
+    branch: {{tm_version}}
+
+- name: jt-library-repo
+  type: git
+  source:
+    uri: https://github.com/TissueMAPS/JtLibrary.git
+    branch: {{tm_version}}
+
+- name: bioformats-repo
+  type: git
+  source:
+    uri: https://github.com/openmicroscopy/bioformats.git
+    tag_filter: v5.7.1
+
+- name: gc3pie-repo
+  type: git
+  source:
+    uri: https://github.com/uzh/gc3pie.git
+    branch: master
+
+- name: tm-library-repo
+  type: git
+  source:
+    uri: https://github.com/TissueMAPS/TmLibrary.git
+    branch: {{tm_version}}
+
+- name: tm-server-repo
+  type: git
+  source:
+    uri: https://github.com/TissueMAPS/TmServer.git
+    branch: {{tm_version}}
+
+- name: tm-client-repo
+  type: git
+  source:
+    uri: https://github.com/TissueMAPS/TmClient.git
+    branch: {{tm_version}}
+
 jobs:
 - name: build-cached-base-1-image
   plan:
   - get: tm-concourse-pipeline
   - task: prepare-base-1-dockerfile
     file: tm-concourse-pipeline/base-tasks/build-cached-base-1-image.yml
-  - put: tm-base-1-image
+  - put: base-1-image
     params:
       build: workspace
 
@@ -84,34 +131,137 @@ jobs:
   plan:
   - get: tm-concourse-pipeline
   - get: tm-deploy-playbook
-  - get: tm-base-1-image
+  - get: base-1-image
     passed: [build-cached-base-1-image]
   - task: prepare-base-2-dockerfile
     file: tm-concourse-pipeline/base-tasks/build-cached-base-2-image.yml
-  - put: tm-base-2-image
+  - put: base-2-image
+    params:
+      build: workspace
+
+- name: build-cached-db-service-image
+  plan:
+  - get: tm-concourse-pipeline
+  - get: tm-deploy-playbook
+  - get: base-2-image
+    passed: [build-cached-base-2-image]
+  - task: prepare-database-dockerfile
+    privileged: true
+    file: tm-concourse-pipeline/db-service-tasks/build-cached-db-service-image.yml
+  - put: db-service-image
+    params:
+      build: workspace
+
+- name: build-cached-web-service-image
+  plan:
+  - get: tm-concourse-pipeline
+  - get: tm-deploy-playbook
+  - get: base-2-image
+    passed: [build-cached-base-2-image]
+  - task: prepare-web-service-dockerfile
+    privileged: true
+    file: tm-concourse-pipeline/web-service-tasks/build-cached-web-service-image.yml
+  - put: web-service-image
+    params:
+      build: workspace
+
+- name: build-cached-tm-ui-image
+  plan:
+  - get: tm-concourse-pipeline
+  - get: tm-deploy-playbook
+  - get: tm-ui-repo
+  - get: web-service-image
+    passed: [build-cached-web-service-image]
+  - task: prepare-tm-ui-dockerfile
+    privileged: true
+    file: tm-concourse-pipeline/tm-ui-tasks/build-cached-tm-ui-image.yml
+  - put: tm-ui-image
+    params:
+      build: workspace
+
+- name: build-cached-jt-library-image
+  plan:
+  - get: tm-concourse-pipeline
+  - get: tm-deploy-playbook
+  - get: jt-library-repo
+  - get: tm-ui-image
+    passed: [build-cached-tm-ui-image]
+  - task: prepare-jt-library-dockerfile
+    privileged: true
+    file: tm-concourse-pipeline/jt-library-tasks/build-cached-jt-library-image.yml
+  - put: jt-library-image
+    params:
+      build: workspace
+
+- name: build-cached-tm-library-image
+  plan:
+  - get: tm-concourse-pipeline
+  - get: tm-deploy-playbook
+  - get: tm-library-repo
+  - get: bioformats-repo
+  - get: gc3pie-repo
+  - get: jt-library-image
+    passed: [build-cached-jt-library-image]
+  - task: prepare-tm-library-dockerfile
+    privileged: true
+    file: tm-concourse-pipeline/tm-library-tasks/build-cached-tm-library-image.yml
+  - put: tm-library-image
+    params:
+      build: workspace
+
+- name: build-cached-tm-server-image
+  plan:
+  - get: tm-concourse-pipeline
+  - get: tm-deploy-playbook
+  - get: tm-server-repo
+  - get: tm-library-image
+    passed: [build-cached-tm-library-image]
+  - task: prepare-tm-server-dockerfile
+    privileged: true
+    file: tm-concourse-pipeline/tm-server-tasks/build-cached-tm-server-image.yml
+  - put: tm-server-image
+    params:
+      build: workspace
+
+- name: build-cached-tm-client-image
+  plan:
+  - get: tm-concourse-pipeline
+  - get: tm-deploy-playbook
+  - get: tm-client-repo
+  - get: base-2-image
+    passed: [build-cached-base-2-image]
+  - task: prepare-tm-client-dockerfile
+    privileged: true
+    file: tm-concourse-pipeline/tm-client-tasks/build-cached-tm-client-image.yml
+  - put: tm-client-image
     params:
       build: workspace
 
 - name: integration-tests
   plan:
-  - get: tm-base-2-image
-    passed: [build-cached-base-2-image]
+  - get: tm-concourse-pipeline
+  - get: db-service-image
+    passed: [build-cached-db-service-image]
+  - get: tm-server-image
+    passed: [build-cached-tm-server-image]
+  - get: tm-client-image
+    passed: [build-cached-tm-client-image]
   - task: run-integration-test-1
-    privileged: true  # do we need this line?????????????
+    file: tm-concourse-pipeline/integration-tests/run-test-1.yml
+    privileged: true
+
+- name: database-tests
+  plan:
+  - get: db-service-image
+    passed: [build-cached-db-service-image]
+  - task: run-database-test-1
+    image: db-service-image
     config:
       platform: linux
-      image_resource:
-        type: docker-image
-        source: {repository: "mumoshu/dcind", tag: "latest"}
       run:
         path: sh
         args:
           - -exc
           - |
-            source /docker-lib.sh
-            start_docker
-            docker ps
-            docker-compose version
-
-            rc=$?
-            exit $rc
+            ls -ahl /var/lib/pgsql-9.6/citus-6.2/master/
+            cat /var/lib/pgsql-9.6/citus-6.2/master/postgresql.conf
