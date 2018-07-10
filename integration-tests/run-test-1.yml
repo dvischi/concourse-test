@@ -35,7 +35,7 @@ run:
     # - If the image comes from a private repository, it is much easier to let Concourse pull it,
     #   and then pass it through to the task.
     # - When the image is passed to the task, Concourse can often get the image from its cache.
-    cd "/tmp/${ci_pipeline_dir}/integration-test-tasks/fixtures"
+    cd "/tmp/${ci_pipeline_dir}/integration-tests/fixtures"
     docker-compose pull
 
     docker images
