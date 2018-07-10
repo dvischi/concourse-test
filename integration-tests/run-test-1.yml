@@ -72,12 +72,14 @@ run:
     docker-compose run --rm tm_client git clone https://github.com/TissueMAPS/TmLibrary.git /tm_library/
     docker-compose run --rm tm_client pip install /tm_library/
     docker-compose run --rm tm_client mkdirs ~/.tmaps
+    
     docker-compose run --rm tm_client cat > ~/.tmaps/tissuemaps.cfg <<__EOF__
-db_user = postgres
-db_host = tm_database
-db_port = 5432
-db_nodes = 1
-__EOF__
+    db_user = postgres
+    db_host = tm_database
+    db_port = 5432
+    db_nodes = 1
+    __EOF__
+    
     docker-compose run --rm tm_client tm_add user -n test -p 1234 -e na
     docker-compose run --rm tm_client python /data.tissuemaps.org/examples/testing/test_datasets.py "/data.tissuemaps.org" --host tmserver --port 8008 --user test --password 1234
 
