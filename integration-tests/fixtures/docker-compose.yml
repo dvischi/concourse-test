@@ -3,7 +3,7 @@
 
 tm_database:
   container_name: tmdatabase
-  image: liberaligroup/database
+  image: liberaligroup/db-service
   restart: always
   ports:
     - "5432:5432"
