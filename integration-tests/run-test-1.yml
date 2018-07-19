@@ -70,6 +70,8 @@ run:
     docker-compose run --rm tm_client ping tmserver -c 4
     #docker-compose run --rm tm_client protractor /tmp/tm-client-repo/test/protractor.conf.js
     docker-compose run --rm tm_client /bin/bash -c "
+        git clone https://github.com/TissueMAPS/JtLibrary.git /jt_library/ &&
+        pip install /jt_library/ &&
         git clone https://github.com/TissueMAPS/TmLibrary.git /tm_library/ &&
         pip install /tm_library/ &&
         mkdirs ~/.tmaps
