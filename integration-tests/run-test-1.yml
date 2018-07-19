@@ -70,6 +70,7 @@ run:
     docker-compose run --rm tm_client ping tmserver -c 4
     #docker-compose run --rm tm_client protractor /tmp/tm-client-repo/test/protractor.conf.js
     docker-compose run --rm tm_client /bin/bash -c "
+        apk --update add openjdk7-jre &&
         pip install --upgrade setuptools &&
         pip install astropy==2.0.2 &&
         git clone https://github.com/uzh/gc3pie.git /gc3pie/ &&
