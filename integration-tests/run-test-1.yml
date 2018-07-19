@@ -71,6 +71,8 @@ run:
     #docker-compose run --rm tm_client protractor /tmp/tm-client-repo/test/protractor.conf.js
     docker-compose run --rm tm_client /bin/bash -c "
         pip install --upgrade setuptools &&
+        git clone https://github.com/uzh/gc3pie.git /gc3pie/ &&
+        pip install /gc3pie/ &&
         git clone https://github.com/TissueMAPS/JtLibrary.git /jt_library/ &&
         pip install /jt_library/python/jtlibrary/ &&
         git clone https://github.com/TissueMAPS/TmLibrary.git /tm_library/ &&
