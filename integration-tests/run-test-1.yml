@@ -69,9 +69,13 @@ run:
     # Run tests
     docker-compose run --rm tm_client ping tmserver -c 4
     #docker-compose run --rm tm_client protractor /tmp/tm-client-repo/test/protractor.conf.js
-    docker-compose run --rm tm_client git clone https://github.com/TissueMAPS/TmLibrary.git /tm_library/
-    docker-compose run --rm tm_client pip install /tm_library/
-    docker-compose run --rm tm_client mkdirs ~/.tmaps
+    docker-compose run --rm tm_client /bin/bash -c "
+        git clone https://github.com/TissueMAPS/TmLibrary.git /tm_library/ &&
+        pip install /tm_library/ &&
+        mkdirs ~/.tmaps
+    "
+    #docker-compose run --rm tm_client pip install /tm_library/
+    #docker-compose run --rm tm_client mkdirs ~/.tmaps
     
     docker-compose run --rm tm_client cat > ~/.tmaps/tissuemaps.cfg <<__EOF__
     db_user = postgres
