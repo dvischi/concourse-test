@@ -80,7 +80,15 @@ run:
         pip install /jt_library/python/jtlibrary/ &&
         git clone https://github.com/TissueMAPS/TmLibrary.git /tm_library/ &&
         pip install /tm_library/ &&
-        mkdirs ~/.tmaps
+        mkdirs ~/.tmaps &&
+        cat > ~/.tmaps/tissuemaps.cfg <<__EOF__
+            db_user = postgres
+            db_host = tm_database
+            db_port = 5432
+            db_nodes = 1
+        __EOF__ &&
+        tm_add user -n test -p 1234 -e na &&
+        python /data.tissuemaps.org/examples/testing/test_datasets.py "/data.tissuemaps.org" --host tmserver --port 8008 --user test --password 1234
     "
     #docker-compose run --rm tm_client pip install /tm_library/
     #docker-compose run --rm tm_client mkdirs ~/.tmaps
