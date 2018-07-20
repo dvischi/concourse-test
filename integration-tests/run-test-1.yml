@@ -70,6 +70,7 @@ run:
     docker-compose run --rm tm_client ping tmserver -c 4
     #docker-compose run --rm tm_client protractor /tmp/tm-client-repo/test/protractor.conf.js
     docker-compose run --rm tm_client /bin/bash -c "
+        printf "hello\nworld\n" &&
         yum install -y java-1.8.0-openjdk &&
         yum install -y java-1.8.0-openjdk-devel &&
         pip install --upgrade setuptools &&
@@ -81,12 +82,7 @@ run:
         git clone https://github.com/TissueMAPS/TmLibrary.git /tm_library/ &&
         pip install /tm_library/ &&
         mkdirs ~/.tmaps &&
-        cat > ~/.tmaps/tissuemaps.cfg <<__EOF__
-            db_user = postgres
-            db_host = tm_database
-            db_port = 5432
-            db_nodes = 1
-        __EOF__ &&
+        printf "db_user = postgres\ndb_user = postgres\ndb_host = tm_database\ndb_port = 5432\ndb_nodes = 1" > ~/.tmaps/tissuemaps.cfg &&
         tm_add user -n test -p 1234 -e na &&
         python /data.tissuemaps.org/examples/testing/test_datasets.py "/data.tissuemaps.org" --host tmserver --port 8008 --user test --password 1234
     "
