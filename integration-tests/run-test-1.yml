@@ -71,6 +71,7 @@ run:
     #docker-compose run --rm tm_client protractor /tmp/tm-client-repo/test/protractor.conf.js
     docker-compose run --rm tm_client /bin/bash -c "
         yum install -y java-1.8.0-openjdk &&
+        yum install -y java-1.8.0-openjdk-devel &&
         pip install --upgrade setuptools &&
         pip install astropy==2.0.2 &&
         git clone https://github.com/uzh/gc3pie.git /gc3pie/ &&
