@@ -81,7 +81,7 @@ run:
         pip install /jt_library/python/jtlibrary/ &&
         git clone https://github.com/TissueMAPS/TmLibrary.git /tm_library/ &&
         pip install /tm_library/ &&
-        mkdirs ~/.tmaps &&
+        mkdir ~/.tmaps &&
         printf "db_user = postgres\ndb_user = postgres\ndb_host = tm_database\ndb_port = 5432\ndb_nodes = 1" > ~/.tmaps/tissuemaps.cfg &&
         tm_add user -n test -p 1234 -e na &&
         python /data.tissuemaps.org/examples/testing/test_datasets.py "/data.tissuemaps.org" --host tmserver --port 8008 --user test --password 1234
