@@ -75,6 +75,7 @@ run:
         yum install -y java-1.8.0-openjdk-devel &&
         pip install --upgrade setuptools &&
         pip install astropy==2.0.2 &&
+        pip install werkzeug &&
         git clone https://github.com/uzh/gc3pie.git /gc3pie/ &&
         pip install /gc3pie/ &&
         git clone https://github.com/TissueMAPS/JtLibrary.git /jt_library/ &&
