@@ -85,7 +85,7 @@ run:
         mkdir ~/.tmaps &&
         mkdir ~/.gc3 &&
         printf 'db_user = postgres\ndb_user = postgres\ndb_host = tm_database\ndb_port = 5432\ndb_nodes = 1' > ~/.tmaps/tissuemaps.cfg &&
-        printf 'username=tmaps\n[resource/localhost]\nenabled=true\ntype=shellcmd\nspooldir=/var/tmp\nauth=noauth\ntransport=local' > ~/.gc3/gc3pie.conf &&
+        printf '[auth/none]\ntype=none\n\n[resource/localhost]\nenabled=yes\ntype=shellcmd\ntransport=local\nauth=none\nmax_cores=2\nmax_cores_per_job=2' > ~/.gc3/gc3pie.conf &&
         tm_add user -n test -p 1234 -e na &&
         python /data.tissuemaps.org/examples/testing/test_datasets.py /data.tissuemaps.org --host tmserver --port 8008 --user test --password 1234
     "
