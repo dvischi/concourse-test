@@ -70,7 +70,8 @@ run:
     docker-compose run --rm tm_client ping tmserver -c 4
     #docker-compose run --rm tm_client protractor /tmp/tm-client-repo/test/protractor.conf.js
     docker-compose run --rm tm_client /bin/bash -c "
-        printf 'hello\nworld\n' &&
+        ping -c 4 tm_database &&
+        ping -c 4 tmdatabase &&
         yum install -y java-1.8.0-openjdk &&
         yum install -y java-1.8.0-openjdk-devel &&
         pip install --upgrade setuptools &&
