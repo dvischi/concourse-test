@@ -70,6 +70,7 @@ run:
     docker-compose run --rm tm_client ping tmserver -c 4
     #docker-compose run --rm tm_client protractor /tmp/tm-client-repo/test/protractor.conf.js
     docker-compose run --rm tm_client /bin/bash -c "
+        yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm &&
         psql -h tmdatabase -p 5432 -c "select 1" &&
         yum install -y java-1.8.0-openjdk &&
         yum install -y java-1.8.0-openjdk-devel &&
