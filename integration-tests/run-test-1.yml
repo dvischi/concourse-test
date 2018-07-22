@@ -68,7 +68,7 @@ run:
 
     # Run tests
     docker-compose run --rm tm_client ping tmserver -c 4
-    docker-compose run tm_database psql -h tmdatabase -p 5432 -c "select 1"
+    docker-compose exec -d tm_database psql -h tmdatabase -p 5432 -c "select 1"
     #docker-compose run --rm tm_client protractor /tmp/tm-client-repo/test/protractor.conf.js
     
     #   firewall-cmd --state &&
