@@ -70,7 +70,7 @@ run:
     docker-compose run --rm tm_client ping tmserver -c 4
     #docker-compose exec tm_database psql -h tmdatabase -p 5432 -c "select 1"
     #docker-compose exec tm_database su - postgres -c "/usr/pgsql-9.6/bin/pg_ctl status -D /var/lib/pgsql-9.6/citus-6.2/master"
-    docker-compose exec tm_database ll /var/lib/pgsql-9.6/citus-6.2/master
+    docker-compose exec tm_database ls /var/lib/pgsql-9.6/citus-6.2/master
     docker-compose exec tm_database su - postgres -c "psql -h localhost -p 5432 -c 'select 1'"
     docker-compose exec tm_database psql -h "localhost" -p 5432 -d tissuemaps -c "select 1"
     #docker-compose run --rm tm_client protractor /tmp/tm-client-repo/test/protractor.conf.js
