@@ -33,6 +33,7 @@ run:
     RUN cd "/tmp/${playbook_dir}/" && ansible-playbook -i hosts -f 10 site.yml --tags "db-service"
     
     # print log output
+    RUN su - postgres -c "ps auxw"
     CMD tail -fn +1 /var/lib/pgsql/psql-master.log
     EOF
 
