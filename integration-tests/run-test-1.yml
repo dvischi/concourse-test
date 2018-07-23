@@ -74,9 +74,9 @@ run:
     docker-compose exec tm_database ls /var/lib/pgsql-9.6/citus-6.2/master
     #docker-compose exec tm_database su - postgres -c "psql -h localhost -p 5432 -c 'select 1'"
     docker-compose exec -u postgres tm_database psql -h "localhost" -p 5432 -d tissuemaps -c "select 1" || echo "error happend :-("
-    docker-compose exec -u postgres tm_database psql -h tm_database -p 5432 -c "select 1" || echo "error happend :-("
-    docker-compose exec tm_database "ps auxw"
-    docker-compose exec tm_database "ps auxw | grep post"
+    docker-compose exec -u postgres tm_database psql -h tmdatabase -p 5432 -c "select 1" || echo "error happend :-("
+    docker-compose exec tm_database ps auxw
+    docker-compose exec tm_database ps auxw | grep post
     docker-compose logs tm_database
     
     #docker-compose exec tm_database su - postgres -c "/usr/pgsql-9.6/bin/pg_ctl --pgdata=/var/lib/pgsql-9.6/citus-6.2/master -o '-p 5432' status"
