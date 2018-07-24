@@ -50,6 +50,8 @@ run:
     #RUN daemonize -u postgres /usr/pgsql-9.6/bin/postgres -h localhost -p 5432 -D /var/lib/pgsql-9.6/citus-6.2/master >/var/lib/pgsql/psql-master.log 2>&1 </dev/null
     #RUN tail -n 100 /var/lib/pgsql/psql-master.log
     
+    RUN cat /var/lib/pgsql-9.6/citus-6.2/master/postgresql.conf
+    
     RUN yum install -y nmap
     RUN nmap -p 5432 localhost
     
