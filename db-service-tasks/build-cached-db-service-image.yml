@@ -76,7 +76,8 @@ run:
     
     USER postgres
     EXPOSE 5432
-    ENTRYPOINT ["/usr/pgsql-9.6/bin/postgres", "-D", "/var/lib/pgsql-9.6/citus-6.2/master", "2>&1", "|", "tee", "/var/lib/pgsql/psql-master.log"]
+    #ENTRYPOINT ["/usr/pgsql-9.6/bin/postgres", "-D", "/var/lib/pgsql-9.6/citus-6.2/master", "2>&1", "|", "tee", "/var/lib/pgsql/psql-master.log"]
+    CMD ["/usr/pgsql-9.6/bin/postgres", "-D", "/var/lib/pgsql-9.6/citus-6.2/master", "-c", "config_file=/var/lib/pgsql-9.6/citus-6.2/master/postgresql.conf"]
     
     EOF
 
