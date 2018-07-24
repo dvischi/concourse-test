@@ -45,6 +45,7 @@ run:
     docker-compose up -d tm_database
     #docker-compose ps
     function dbIsReady() {
+        docker-compose logs tm_database
         docker-compose logs tm_database | grep "database system is ready to accept connections"
     }
     until dbIsReady;
