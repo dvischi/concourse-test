@@ -54,8 +54,10 @@ run:
     
     RUN yum install -y nmap
     RUN nmap -p 5432 localhost
+    RUN su - postgres -c "nmap -p 5432 localhost"
     
-    RUN su - postgres -c "psql -h localhost -p 5432 -c 'select 1;'"
+    RUN su - postgres -c "psql -h 'localhost' -p 5432 -d tissuemaps -c 'select 1;' || echo ':-('"
+    RUN psql -h 'localhost' -p 5432 -U postgres -d tissuemaps -c 'select 1;' || echo ':-('
     RUN psql -h localhost -p 5432 -c 'select 1;'
 
     # print log output
