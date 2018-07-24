@@ -30,9 +30,7 @@ run:
     COPY "${playbook_dir}/" "/tmp/${playbook_dir}/"
 
     # Run Ansible script
-    #RUN cd "/tmp/${playbook_dir}/" && ansible-playbook -i hosts -f 10 site.yml --tags "db-service"
-    RUN cd "/tmp/${playbook_dir}/"
-    RUN ansible-playbook -i hosts -f 10 site.yml --tags "db-service"
+    RUN cd "/tmp/${playbook_dir}/" && ansible-playbook -i hosts -f 10 site.yml --tags "db-service"
 
     # Run database server
     #RUN su - postgres -c "nohup ./pg_ctl --pgdata=/var/lib/pgsql-9.6/citus-6.2/master -o '-p 5432' start </dev/null >/dev/null 2>&1 &"
@@ -47,6 +45,8 @@ run:
     RUN tail -n 100 /var/lib/pgsql/psql-master.log
     #RUN su - postgres -c "/usr/pgsql-9.6/bin/postgres -h localhost -p 5432 -D /var/lib/pgsql-9.6/citus-6.2/master >/var/lib/pgsql/psql-master.log 2>&1 </dev/null"
     
+    RUN sudo -u postgres /usr/pgsql-9.6/bin/pg_ctl --pgdata=/var/lib/pgsql-9.6/citus-6.2/master -o "-p 5432" start || echo ":-("
+    RUN su - postgres -c "/usr/pgsql-9.6/bin/pg_ctl --pgdata=/var/lib/pgsql-9.6/citus-6.2/master -o '-p 5432' start || echo ':-('"
     
     #RUN yum install -y daemonize
     #RUN daemonize -u postgres /usr/pgsql-9.6/bin/postgres -h localhost -p 5432 -D /var/lib/pgsql-9.6/citus-6.2/master >/var/lib/pgsql/psql-master.log 2>&1 </dev/null
