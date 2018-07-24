@@ -39,6 +39,7 @@ run:
     #RUN su - postgres -c "ps auxw"
     RUN su - postgres -c "nohup /usr/pgsql-9.6/bin/postgres -h localhost -p 5432 -D /var/lib/pgsql-9.6/citus-6.2/master >/var/lib/pgsql/psql-master.log 2>&1 </dev/null &"
     RUN su - postgres -c "ps auxw"
+    RUN tail -n 100 /var/lib/pgsql/psql-master.log
     RUN su - postgres -c "/usr/pgsql-9.6/bin/postgres -h localhost -p 5432 -D /var/lib/pgsql-9.6/citus-6.2/master >/var/lib/pgsql/psql-master.log 2>&1 </dev/null"
     
     RUN su - postgres -c "psql -h localhost -p 5432 -c 'select 1;'"
