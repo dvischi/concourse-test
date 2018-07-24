@@ -33,8 +33,9 @@ run:
     RUN cd "/tmp/${playbook_dir}/" && ansible-playbook -i hosts -f 10 site.yml --tags "db-service"
 
     # Run database server
-    RUN su - postgres -c "nohup ./pg_ctl --pgdata=/var/lib/pgsql-9.6/citus-6.2/master -o '-p 5432' start </dev/null >/dev/null 2>&1 &"
-    RUN su - postgres -c "ps auxw"
+    #RUN su - postgres -c "nohup ./pg_ctl --pgdata=/var/lib/pgsql-9.6/citus-6.2/master -o '-p 5432' start </dev/null >/dev/null 2>&1 &"
+    #RUN su - postgres -c "ps auxw"
+    psql -h localhost -p 5432 -c "select 1;"
 
     # print log output
     CMD tail -fn +1 /var/lib/pgsql/psql-master.log
