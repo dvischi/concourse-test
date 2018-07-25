@@ -109,7 +109,7 @@ run:
         git clone https://github.com/TissueMAPS/JtLibrary.git /jt_library/ &&
         pip install /jt_library/python/jtlibrary/ &&
         git clone https://github.com/TissueMAPS/TmLibrary.git /tm_library/ &&
-        sed -i \"136i\        raise ValueError('Cannot connect to %s: %s.' % (db_url, str(err)))\" /tm_library/tmlib/models/utils.py &&
+        sed -i \"136i\        raise ValueError('Cannot connect to %s: %s.' % (db_url, self.db_password))\" /tm_library/tmlib/models/utils.py &&
         pip install /tm_library/ &&
         mkdir ~/.tmaps &&
         mkdir ~/.gc3 &&
