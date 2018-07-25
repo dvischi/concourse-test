@@ -70,7 +70,7 @@ run:
     # Run tests
     docker-compose run --rm tm_client ping tmserver -c 4
     
-    docker-compose exec tm_database su - postgres -c "psql -h localhost -p 5432 -c \"select * from information_schema.tables where table_schema='public'\""
+    docker-compose exec -u postgres tm_database psql -h localhost -p 5432 -c "SELECT * FROM pg_catalog.pg_tables;"
     false
     
     #docker-compose exec tm_database psql -h tmdatabase -p 5432 -c "select 1"
