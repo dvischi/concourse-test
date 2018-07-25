@@ -91,13 +91,14 @@ run:
     #   firewall-cmd --permanent --zone=trusted --add-port=5432/tcp &&
     #   firewall-cmd --reload &&
     
+    #docker-compose run --rm tm_client /bin/bash -c "
+    #    yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm &&
+    #    ping -c 4 tmdatabase &&
+    #    sudo yum install -y postgresql96-server postgresql96-contrib &&
+    #    yum install -y nmap &&
+    #    nmap -p 5432 tmdatabase &&
+    #    PGPASSWORD=tissuemaps psql -U tissuemaps -h tmdatabase -p 5432 -d tissuemaps -c 'select 1' &&
     docker-compose run --rm tm_client /bin/bash -c "
-        yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm &&
-        ping -c 4 tmdatabase &&
-        sudo yum install -y postgresql96-server postgresql96-contrib &&
-        yum install -y nmap &&
-        nmap -p 5432 tmdatabase &&
-        PGPASSWORD=tissuemaps psql -U tissuemaps -h tmdatabase -p 5432 -d tissuemaps -c 'select 1' &&
         yum install -y java-1.8.0-openjdk &&
         yum install -y java-1.8.0-openjdk-devel &&
         pip install --upgrade setuptools &&
@@ -113,6 +114,7 @@ run:
         mkdir ~/.gc3 &&
         printf 'db_user = tissuemaps\ndb_password = tissuemaps\ndb_host = tmdatabase\ndb_port = 5432\ndb_nodes = 1' > ~/.tmaps/tissuemaps.cfg &&
         printf '[auth/noauth]\ntype=none\n\n[resource/localhost]\nenabled=true\ntype=shellcmd\nspooldir=/var/tmp\nauth=noauth\ntransport=local\nmax_cores=1\nmax_cores_per_job=1\nmax_memory_per_core=1 GB\nmax_walltime=2 hours\narchitecture=x64_64\noverride = no' > ~/.gc3/gc3pie.conf &&
+        cat ~/.tmaps/tissuemaps.cfg &&
         tm_add user -n test -p 1234 -e na &&
         python /data.tissuemaps.org/examples/testing/test_datasets.py /data.tissuemaps.org --host tmserver --port 8008 --user test --password 1234
     "
