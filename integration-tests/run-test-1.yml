@@ -97,7 +97,7 @@ run:
         sudo yum install -y postgresql96-server postgresql96-contrib &&
         yum install -y nmap &&
         nmap -p 5432 tmdatabase &&
-        PGPASSWORD=tissuemaps psql -U tissuemaps -h tmdatabase -p 5432 -d tissuemaps -c "select 1" &&
+        PGPASSWORD=tissuemaps psql -U tissuemaps -h tmdatabase -p 5432 -d tissuemaps -c 'select 1' &&
         yum install -y java-1.8.0-openjdk &&
         yum install -y java-1.8.0-openjdk-devel &&
         pip install --upgrade setuptools &&
