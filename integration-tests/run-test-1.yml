@@ -70,6 +70,9 @@ run:
     # Run tests
     docker-compose run --rm tm_client ping tmserver -c 4
     
+    docker-compose exec tm_database su - postgres -c "psql -h localhost -p 5432 -c \"select * from information_schema.tables where table_schema='public'\""
+    false
+    
     #docker-compose exec tm_database psql -h tmdatabase -p 5432 -c "select 1"
     #docker-compose exec tm_database su - postgres -c "/usr/pgsql-9.6/bin/pg_ctl status -D /var/lib/pgsql-9.6/citus-6.2/master"
     #docker-compose exec tm_database ls /var/lib/pgsql-9.6/citus-6.2/master
@@ -98,6 +101,7 @@ run:
     #    yum install -y nmap &&
     #    nmap -p 5432 tmdatabase &&
     #    PGPASSWORD=tissuemaps psql -U tissuemaps -h tmdatabase -p 5432 -d tissuemaps -c 'select 1' &&
+    #    sed -i \"136i\        raise ValueError('Cannot connect to %s: %s.' % (db_url, str(err)))\" /tm_library/tmlib/models/utils.py &&
     docker-compose run --rm tm_client /bin/bash -c "
         yum install -y java-1.8.0-openjdk &&
         yum install -y java-1.8.0-openjdk-devel &&
@@ -109,7 +113,6 @@ run:
         git clone https://github.com/TissueMAPS/JtLibrary.git /jt_library/ &&
         pip install /jt_library/python/jtlibrary/ &&
         git clone https://github.com/TissueMAPS/TmLibrary.git /tm_library/ &&
-        sed -i \"136i\        raise ValueError('Cannot connect to %s: %s.' % (db_url, str(err)))\" /tm_library/tmlib/models/utils.py &&
         pip install /tm_library/ &&
         mkdir ~/.tmaps &&
         mkdir ~/.gc3 &&
