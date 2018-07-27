@@ -94,6 +94,9 @@ run:
     #   firewall-cmd --permanent --zone=trusted --add-port=5432/tcp &&
     #   firewall-cmd --reload &&
     
+    docker-compose exec tm_server cat /etc/nginx/nginx.conf
+    docker-compose exec tm_server cat /etc/nginx/conf.d/tissuemaps.conf
+    
     #docker-compose run --rm tm_client /bin/bash -c "
     #    yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm &&
     #    ping -c 4 tmdatabase &&
