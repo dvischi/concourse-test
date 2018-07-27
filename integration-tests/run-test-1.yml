@@ -70,7 +70,7 @@ run:
     # Run tests
     docker-compose run --rm tm_client ping tmserver -c 4
     
-    docker-compose exec tm_server which java-1.8.0-openjdk
+    #docker-compose exec tm_server which java-1.8.0-openjdk
     docker-compose exec tm_server ll /usr/lib/jvm/
     false
     
