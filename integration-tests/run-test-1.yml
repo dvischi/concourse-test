@@ -70,7 +70,7 @@ run:
     # Run tests
     docker-compose run --rm tm_client ping tmserver -c 4
     
-    docker-compose exec tm_server cat /etc/nginx/nginx.conf
+    docker-compose exec tm_server cat /etc/uwsgi.ini
     docker-compose exec tm_server cat /etc/nginx/conf.d/tissuemaps.conf
     
     docker-compose exec -u postgres tm_database psql -h localhost -p 5432 -c "SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema';"
