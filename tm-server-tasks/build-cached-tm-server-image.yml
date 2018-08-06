@@ -42,7 +42,8 @@ run:
     #CMD ["/usr/pgsql-9.6/bin/postgres", "-D", "/var/lib/pgsql-9.6/citus-6.2/master", "-c", "config_file=/var/lib/pgsql-9.6/citus-6.2/master/postgresql.conf", "&", "tail" "-f" "/var/lib/pgsql/psql-master.log"]
     CMD nginx -g 'daemon off;' & \
         uwsgi --http :8080 & \
-        tail /var/log/uwsgi/tissuemaps.log
+        sleep 10 & \
+        tail -n 1000 /var/log/uwsgi/tissuemaps.log
     
     EOF
 
