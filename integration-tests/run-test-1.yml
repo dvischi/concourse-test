@@ -68,6 +68,9 @@ run:
     docker-compose logs tm_server
 
     # Run tests
+    docker-compose run --rm tm_server ps aux
+    docker-compose run --rm tm_server tail /var/log/nginx/error.log
+    
     docker-compose run --rm tm_client ping tmserver -c 4
     
     docker-compose run --rm tm_client /bin/bash -c "
