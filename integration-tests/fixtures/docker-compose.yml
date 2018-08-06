@@ -17,7 +17,7 @@ tm_server:
   image: liberaligroup/tm-server
   restart: always
   ports:
-    - "8008:8008"
+    - "8008:8080"
   links:
     - tm_database:tmdatabase
   extra_hosts:

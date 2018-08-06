@@ -70,9 +70,13 @@ run:
     # Run tests
     docker-compose run --rm tm_client ping tmserver -c 4
     
-    #docker-compose exec tm_server which java-1.8.0-openjdk
-    docker-compose exec tm_server ls -ahl /usr/lib/jvm/
-    false
+    docker-compose run --rm tm_client /bin/bash -c "
+        ping -c 4 tmserver &&
+        yum install -y nmap &&
+        nmap -p 8008 tmserver &&
+        yum install -y wget &&
+        wget -qO- tmserver:8008 | cat
+    "
     
     docker-compose exec -u postgres tm_database psql -h localhost -p 5432 -c "SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema';"
     false
