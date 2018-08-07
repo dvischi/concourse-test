@@ -71,9 +71,7 @@ run:
 
     # Run tests
     docker-compose run --rm tm_server /bin/bash -c "
-        (python -c 'import tmserver; print(tmserver.__file__);' ||
-        python3 -c 'import tmserver; print(tmserver.__file__);' ||
-        echo 'TMServer was not found!') &&
+        uwsgi --plugins http,python --http :8080 &&
         ps aux &&
         (tail -f /var/log/uwsgi/tissuemaps.log || echo 'error happend :-(')
     "
