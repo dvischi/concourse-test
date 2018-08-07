@@ -70,20 +70,19 @@ run:
     docker-compose logs tm_server
 
     # Run tests
+    docker-compose run --rm tm_server /bin/bash -c "
+        nginx -g 'daemon off;' &
+        uwsgi --plugins http,python --http :8080 &
+        sleep 10 &&
+        tail -f /var/log/uwsgi/tissuemaps.log
+    "
+    
     docker-compose exec tm_server ps aux
     docker-compose exec tm_server ls /var/log/nginx/ || echo "error happend :-("
     docker-compose exec tm_server ls /var/log/uwsgi/ || echo "error happend :-("
     docker-compose exec tm_server tail /var/log/nginx/error.log
     
     docker-compose run --rm tm_client ping tmserver -c 4
-    
-    docker-compose run --rm tm_client /bin/bash -c "
-        ping -c 4 tmserver &&
-        yum install -y nmap &&
-        nmap -p 8008 tmserver &&
-        yum install -y wget &&
-        wget -qO- tmserver:8008 | cat
-    "
     
     docker-compose exec -u postgres tm_database psql -h localhost -p 5432 -c "SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema';"
     false
