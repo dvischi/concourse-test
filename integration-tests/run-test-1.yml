@@ -71,9 +71,10 @@ run:
 
     # Run tests
     docker-compose run -u root --rm tm_server /bin/bash -c "
-        nginx -g 'daemon off;' &
-        uwsgi --plugins http,python --http :8080 &
-        sleep 10 &&
+        ( nginx -g 'daemon off;' &
+          uwsgi --plugins http,python --http :8080 &
+          sleep 10
+        ) &&
         tail -f /var/log/uwsgi/tissuemaps.log
     "
     
