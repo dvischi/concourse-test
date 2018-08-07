@@ -29,8 +29,6 @@ tm_client:
   container_name: tmclient
   image: liberaligroup/tm-client
   restart: always
-  ports:
-    - "8009:8009"
   links:
     - tm_server:tmserver
     - tm_database:tmdatabase
