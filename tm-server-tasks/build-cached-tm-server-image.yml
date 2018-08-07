@@ -50,7 +50,7 @@ run:
     RUN nginx -g 'daemon off;' &
     RUN uwsgi --plugins http,python --http :8080 &
     RUN sleep 10
-    CMD tail -f /var/log/uwsgi/tissuemaps.log
+    CMD tail -f /var/log/uwsgi/tissuemaps.log || echo "ERROR: no log file found!"
     
     EOF
 
