@@ -76,7 +76,7 @@ run:
           sleep 10
         ) &&
         ps aux &&
-        tail -f /var/log/uwsgi/tissuemaps.log || echo "error happend :-("
+        tail -f /var/log/uwsgi/tissuemaps.log || echo 'error happend :-('
     "
     
     docker-compose exec tm_server ps aux
