@@ -78,7 +78,7 @@ run:
     #    tail -f /var/log/uwsgi/tissuemaps.log
     #"
     
-    docker-compose exec tm_server ps aux
+    docker-compose run --rm tm_server ps aux
     docker-compose exec tm_server ls /var/log/nginx/ || echo "error happend :-("
     docker-compose exec tm_server ls /var/log/uwsgi/ || echo "error happend :-("
     docker-compose exec tm_server tail /var/log/nginx/error.log
