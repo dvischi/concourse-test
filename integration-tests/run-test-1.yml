@@ -64,7 +64,7 @@ run:
     #    sleep 1;
     #done;
 
-    sleep(10)
+    sleep 10
 
     docker-compose logs tm_database
     docker-compose logs tm_server
