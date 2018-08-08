@@ -71,7 +71,7 @@ run:
 
     # Run tests
     docker-compose run --rm tm_server /bin/bash -c "
-        uwsgi --plugins http,python --http :8080 &&
+        su - tissuemaps -c "uwsgi --ini /etc/uwsgi.ini" &
         ps aux &&
         (tail -f /var/log/uwsgi/tissuemaps.log || echo 'error happend :-(')
     "
