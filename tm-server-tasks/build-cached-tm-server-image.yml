@@ -41,16 +41,16 @@ run:
     EXPOSE 8080
     #ENTRYPOINT ["/usr/pgsql-9.6/bin/postgres", "-D", "/var/lib/pgsql-9.6/citus-6.2/master", "2>&1", "|", "tee", "/var/lib/pgsql/psql-master.log"]
     #CMD ["/usr/pgsql-9.6/bin/postgres", "-D", "/var/lib/pgsql-9.6/citus-6.2/master", "-c", "config_file=/var/lib/pgsql-9.6/citus-6.2/master/postgresql.conf", "&", "tail" "-f" "/var/lib/pgsql/psql-master.log"]
-    #CMD ( \
-    #        nginx -g 'daemon off;' & \
-    #        uwsgi --plugins http,python --http :8080 & \
-    #        sleep 10 \
-    #    ) && \
-    #    tail -f /var/log/uwsgi/tissuemaps.log
-    RUN nginx -g 'daemon off;' &
-    RUN uwsgi --plugins http,python --http :8080 &
-    RUN sleep 10
-    CMD tail -f /var/log/uwsgi/tissuemaps.log || echo "ERROR: no log file found!"
+    CMD ( \
+            nginx -g 'daemon off;' & \
+            uwsgi --ini /etc/uwsgi.ini & \
+            sleep 10 \
+        ) && \
+        tail -f /var/log/uwsgi/tissuemaps.log
+    #RUN nginx -g 'daemon off;' &
+    #RUN uwsgi --plugins http,python --http :8080 &
+    #RUN sleep 10
+    #CMD tail -f /var/log/uwsgi/tissuemaps.log || echo "ERROR: no log file found!"
     
     EOF
 
