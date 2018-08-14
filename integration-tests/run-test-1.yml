@@ -71,6 +71,7 @@ run:
 
     # Run tests
     docker-compose run --rm tm_server /bin/bash -c "
+        ls -ahl /var/run &&
         touch /var/log/uwsgi/tissuemaps.log &&
         chown uwsgi:uwsgi /var/log/uwsgi/tissuemaps.log &&
         uwsgi --ini /etc/uwsgi.ini &&
