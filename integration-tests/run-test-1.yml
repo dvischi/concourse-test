@@ -82,6 +82,7 @@ run:
     #"
     
     docker-compose run --rm tm_server /bin/bash -c "
+        PGPASSWORD=tissuemaps psql -U tissuemaps -h tmdatabase -p 5432 -d tissuemaps -c 'select 1' &&
         mkdir ~/.tmaps &&
         mkdir ~/.gc3 &&
         printf '[DEFAULT]\ndb_user = tissuemaps\ndb_password = tissuemaps\ndb_host = tmdatabase\ndb_port = 5432\ndb_nodes = 1' > ~/.tmaps/tissuemaps.cfg &&
