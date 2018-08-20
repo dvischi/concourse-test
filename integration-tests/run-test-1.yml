@@ -70,13 +70,24 @@ run:
     docker-compose logs tm_server
 
     # Run tests
+    #docker-compose run --rm tm_server /bin/bash -c "
+    #    cat /etc/uwsgi.ini &&
+    #    ls -ahl /var/run/ &&
+    #    touch /var/log/uwsgi/tissuemaps.log &&
+    #    chown uwsgi:uwsgi /var/log/uwsgi/tissuemaps.log &&
+    #    uwsgi --ini /etc/uwsgi.ini &&
+    #    echo su - tissuemaps -c "uwsgi --ini /etc/uwsgi.ini" &&
+    #    ps aux &&
+    #    (tail -f /var/log/uwsgi/tissuemaps.log || echo 'error happend :-(')
+    #"
+    
     docker-compose run --rm tm_server /bin/bash -c "
-        cat /etc/uwsgi.ini &&
-        ls -ahl /var/run/ &&
-        touch /var/log/uwsgi/tissuemaps.log &&
-        chown uwsgi:uwsgi /var/log/uwsgi/tissuemaps.log &&
+        mkdir ~/.tmaps &&
+        mkdir ~/.gc3 &&
+        printf '[DEFAULT]\ndb_user = tissuemaps\ndb_password = tissuemaps\ndb_host = tmdatabase\ndb_port = 5432\ndb_nodes = 1' > ~/.tmaps/tissuemaps.cfg &&
+        printf '[auth/noauth]\ntype=none\n\n[resource/localhost]\nenabled=true\ntype=shellcmd\nspooldir=/var/tmp\nauth=noauth\ntransport=local\nmax_cores=1\nmax_cores_per_job=1\nmax_memory_per_core=1 GB\nmax_walltime=2 hours\narchitecture=x64_64\noverride = no' > ~/.gc3/gc3pie.conf &&
+        cat ~/.tmaps/tissuemaps.cfg &&
         uwsgi --ini /etc/uwsgi.ini &&
-        echo su - tissuemaps -c "uwsgi --ini /etc/uwsgi.ini" &&
         ps aux &&
         (tail -f /var/log/uwsgi/tissuemaps.log || echo 'error happend :-(')
     "
