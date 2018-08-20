@@ -82,8 +82,8 @@ run:
     #"
     
     docker-compose run --rm tm_server /bin/bash -c "
-        ls /root/.local/lib/python2.7/bin/ &&
-        /root/.local/lib/python2.7/bin/tm_server -vvv &&
+        ls /root/.local/bin/ &&
+        /root/.local/bin/tm_server -vvv &&
         yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm &&
         ping -c 4 tmdatabase &&
         sudo yum install -y postgresql96-server postgresql96-contrib &&
