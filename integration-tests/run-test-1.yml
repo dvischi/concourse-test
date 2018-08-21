@@ -87,7 +87,6 @@ run:
     #"
     
     docker-compose run --rm tm_server /bin/bash -c "
-        printf '[auth/noauth]\ntype=none\n\n[resource/localhost]\nenabled=true\ntype=shellcmd\nspooldir=/var/tmp\nauth=noauth\ntransport=local\nmax_cores=1\nmax_cores_per_job=1\nmax_memory_per_core=1 GB\nmax_walltime=2 hours\narchitecture=x64_64\noverride = no' > /home/tissuemaps/.gc3/gc3pie.conf &&
         ls /home/tissuemaps/.gc3 &&
         ls /home/tissuemaps/.tmaps &&
         ls /home/tissuemaps/.local/bin/ &&
