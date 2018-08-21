@@ -64,7 +64,7 @@ run:
     #    sleep 1;
     #done;
 
-    sleep 10
+    sleep 20
 
     docker-compose logs tm_database
     docker-compose logs tm_server
@@ -86,34 +86,33 @@ run:
     #    su - tissuemaps -c "/root/.local/bin/tm_server -vvv" &&
     #"
     
-    docker-compose run --rm tm_server /bin/bash -c "
-        ls /home/tissuemaps/.gc3 &&
-        ls /home/tissuemaps/.tmaps &&
-        ls /home/tissuemaps/.local/bin/ &&
-        su - tissuemaps -c "/home/tissuemaps/.local/bin/tm_server -vvv" &&
-        yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm &&
-        ping -c 4 tmdatabase &&
-        sudo yum install -y postgresql96-server postgresql96-contrib &&
-        PGPASSWORD=tissuemaps psql -U tissuemaps -h tmdatabase -p 5432 -d tissuemaps -c 'select 1' &&
-        mkdir ~/.tmaps &&
-        mkdir ~/.gc3 &&
-        printf '[DEFAULT]\ndb_user = tissuemaps\ndb_password = tissuemaps\ndb_host = tmdatabase\ndb_port = 5432\ndb_nodes = 1' > ~/.tmaps/tissuemaps.cfg &&
-        printf '[auth/noauth]\ntype=none\n\n[resource/localhost]\nenabled=true\ntype=shellcmd\nspooldir=/var/tmp\nauth=noauth\ntransport=local\nmax_cores=1\nmax_cores_per_job=1\nmax_memory_per_core=1 GB\nmax_walltime=2 hours\narchitecture=x64_64\noverride = no' > ~/.gc3/gc3pie.conf &&
-        cat ~/.tmaps/tissuemaps.cfg &&
-        uwsgi --ini /etc/uwsgi.ini &&
-        ps aux &&
-        (tail -f /var/log/uwsgi/tissuemaps.log || echo 'error happend :-(')
-    "
+    #docker-compose run --rm tm_server /bin/bash -c "
+    #    ls /home/tissuemaps/.gc3 &&
+    #    ls /home/tissuemaps/.tmaps &&
+    #    ls /home/tissuemaps/.local/bin/ &&
+    #    su - tissuemaps -c "/home/tissuemaps/.local/bin/tm_server -vvv" &&
+    #    yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm &&
+    #    ping -c 4 tmdatabase &&
+    #    sudo yum install -y postgresql96-server postgresql96-contrib &&
+    #    PGPASSWORD=tissuemaps psql -U tissuemaps -h tmdatabase -p 5432 -d tissuemaps -c 'select 1' &&
+    #    mkdir ~/.tmaps &&
+    #    mkdir ~/.gc3 &&
+    #    printf '[DEFAULT]\ndb_user = tissuemaps\ndb_password = tissuemaps\ndb_host = tmdatabase\ndb_port = 5432\ndb_nodes = 1' > ~/.tmaps/tissuemaps.cfg &&
+    #    printf '[auth/noauth]\ntype=none\n\n[resource/localhost]\nenabled=true\ntype=shellcmd\nspooldir=/var/tmp\nauth=noauth\ntransport=local\nmax_cores=1\nmax_cores_per_job=1\nmax_memory_per_core=1 GB\nmax_walltime=2 hours\narchitecture=x64_64\noverride = no' > ~/.gc3/gc3pie.conf &&
+    #    cat ~/.tmaps/tissuemaps.cfg &&
+    #    uwsgi --ini /etc/uwsgi.ini &&
+    #    ps aux &&
+    #    (tail -f /var/log/uwsgi/tissuemaps.log || echo 'error happend :-(')
+    #"
     
-    docker-compose exec tm_server ps aux
-    docker-compose exec tm_server ls /var/log/nginx/ || echo "error happend :-("
-    docker-compose exec tm_server ls /var/log/uwsgi/ || echo "error happend :-("
-    docker-compose exec tm_server tail /var/log/nginx/error.log
+    #docker-compose exec tm_server ps aux
+    #docker-compose exec tm_server ls /var/log/nginx/ || echo "error happend :-("
+    #docker-compose exec tm_server ls /var/log/uwsgi/ || echo "error happend :-("
+    #docker-compose exec tm_server tail /var/log/nginx/error.log
     
     docker-compose run --rm tm_client ping tmserver -c 4
     
-    docker-compose exec -u postgres tm_database psql -h localhost -p 5432 -c "SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema';"
-    false
+    #docker-compose exec -u postgres tm_database psql -h localhost -p 5432 -c "SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema';"
     
     #docker-compose exec tm_database psql -h tmdatabase -p 5432 -c "select 1"
     #docker-compose exec tm_database su - postgres -c "/usr/pgsql-9.6/bin/pg_ctl status -D /var/lib/pgsql-9.6/citus-6.2/master"
@@ -146,6 +145,7 @@ run:
     #    PGPASSWORD=tissuemaps psql -U tissuemaps -h tmdatabase -p 5432 -d tissuemaps -c 'select 1' &&
     #    sed -i \"136i\        raise ValueError('Cannot connect to %s: %s.' % (db_url, str(err)))\" /tm_library/tmlib/models/utils.py &&
     docker-compose run --rm tm_client /bin/bash -c "
+        ls /data.tissuemaps.org &&
         yum install -y java-1.8.0-openjdk &&
         yum install -y java-1.8.0-openjdk-devel &&
         pip install --upgrade setuptools &&
