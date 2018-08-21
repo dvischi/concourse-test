@@ -163,7 +163,14 @@ run:
         printf '[auth/noauth]\ntype=none\n\n[resource/localhost]\nenabled=true\ntype=shellcmd\nspooldir=/var/tmp\nauth=noauth\ntransport=local\nmax_cores=1\nmax_cores_per_job=1\nmax_memory_per_core=1 GB\nmax_walltime=2 hours\narchitecture=x64_64\noverride = no' > ~/.gc3/gc3pie.conf &&
         cat ~/.tmaps/tissuemaps.cfg &&
         tm_add user -n test -p 1234 -e na &&
-        python /data.tissuemaps.org/examples/testing/test_datasets.py /data.tissuemaps.org --host tmserver --port 8008 --user test --password 1234
+        ls /root/.local/lib/python2.7/site-packages &&
+        ls /root/.local/lib/python2.7/site-packages/tmclient &&
+        ls /root/.local/lib/python2.7/site-packages/tmclient/examples/testing/ &&
+        echo DOANLOAD DATA &&
+        yum install -y wget &&
+        mkdir /data2.tissuemaps.org || echo "/data2.tissuemaps.org already exists!" &&
+        wget -r --no-parent http://172.23.194.13:8081/v0.4.0/ -P /data2.tissuemaps.org &&
+        python /root/.local/lib/python2.7/site-packages/tmclient/examples/testing/test_datasets.py /data2.tissuemaps.org --host tmserver --port 8008 --user test --password 1234
     "
     #docker-compose run --rm tm_client pip install /tm_library/
     #docker-compose run --rm tm_client mkdirs ~/.tmaps

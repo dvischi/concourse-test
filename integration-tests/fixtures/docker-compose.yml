@@ -34,5 +34,5 @@ tm_client:
     - tm_database:tmdatabase
   tty: true
   stdin_open: true
-  volumes:
-    - /home/concourse/data.tissuemaps.org:/data.tissuemaps.org
+  #volumes:
+  #  - /home/concourse/data.tissuemaps.org:/data.tissuemaps.org
