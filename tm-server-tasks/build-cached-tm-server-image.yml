@@ -42,8 +42,8 @@ run:
     #ENTRYPOINT ["/usr/pgsql-9.6/bin/postgres", "-D", "/var/lib/pgsql-9.6/citus-6.2/master", "2>&1", "|", "tee", "/var/lib/pgsql/psql-master.log"]
     #CMD ["/usr/pgsql-9.6/bin/postgres", "-D", "/var/lib/pgsql-9.6/citus-6.2/master", "-c", "config_file=/var/lib/pgsql-9.6/citus-6.2/master/postgresql.conf", "&", "tail" "-f" "/var/lib/pgsql/psql-master.log"]
     CMD ( \
-            nginx -g 'daemon off;' & \
-            uwsgi --ini /etc/uwsgi.ini --processes 1 & \
+            nginx -g 'daemon off; worker_processes 1;' & \
+            uwsgi --ini /etc/uwsgi.ini --processes 1 --threads 1 & \
             sleep 10 \
         ) && \
         tail -f /var/log/uwsgi/tissuemaps.log

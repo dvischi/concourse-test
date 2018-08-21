@@ -162,10 +162,13 @@ run:
         printf '[auth/noauth]\ntype=none\n\n[resource/localhost]\nenabled=true\ntype=shellcmd\nspooldir=/var/tmp\nauth=noauth\ntransport=local\nmax_cores=1\nmax_cores_per_job=1\nmax_memory_per_core=1 GB\nmax_walltime=2 hours\narchitecture=x64_64\noverride = no' > ~/.gc3/gc3pie.conf &&
         cat ~/.tmaps/tissuemaps.cfg &&
         tm_add user -n test -p 1234 -e na &&
-        ls /root/.local/lib/python2.7/site-packages &&
-        ls /root/.local/lib/python2.7/site-packages/tmclient &&
-        ls /root/.local/lib/python2.7/site-packages/tmclient/examples/testing/ &&
-        echo DOANLOAD DATA &&
+        #ls /root/.local/lib/python2.7/site-packages &&
+        #ls /root/.local/lib/python2.7/site-packages/tmclient &&
+        #ls /root/.local/lib/python2.7/site-packages/tmclient/examples/testing/ &&
+        ls /home/tissuemaps/.local/lib/python2.7/site-packages &&
+        ls /home/tissuemaps/.local/lib/python2.7/site-packages/tmclient &&
+        ls /home/tissuemaps/.local/lib/python2.7/site-packages/tmclient/examples/testing/ &&
+        echo DOWNLOAD DATA &&
         yum install -y wget &&
         mkdir /data2.tissuemaps.org || echo "/data2.tissuemaps.org already exists!" &&
         wget -r --no-parent http://172.23.194.13:8081/v0.4.0/ -P /data2.tissuemaps.org &&
