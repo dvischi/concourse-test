@@ -145,7 +145,6 @@ run:
     #    PGPASSWORD=tissuemaps psql -U tissuemaps -h tmdatabase -p 5432 -d tissuemaps -c 'select 1' &&
     #    sed -i \"136i\        raise ValueError('Cannot connect to %s: %s.' % (db_url, str(err)))\" /tm_library/tmlib/models/utils.py &&
     docker-compose run --rm tm_client /bin/bash -c "
-        ls /data.tissuemaps.org &&
         yum install -y java-1.8.0-openjdk &&
         yum install -y java-1.8.0-openjdk-devel &&
         pip install --upgrade setuptools &&
