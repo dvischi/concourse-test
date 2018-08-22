@@ -5,7 +5,7 @@ tm_database:
   container_name: tmdatabase
   image: liberaligroup/db-service
   #restart: always
-  restart: no
+  restart: "no"
   ports:
     - "5432:5432"
   extra_hosts:
@@ -17,7 +17,7 @@ tm_server:
   container_name: tmserver
   image: liberaligroup/tm-server
   #restart: always
-  restart: no
+  restart: "no"
   ports:
     - "8008:8080"
   links:
@@ -31,7 +31,7 @@ tm_client:
   container_name: tmclient
   image: liberaligroup/tm-client
   #restart: always
-  restart: no
+  restart: "no"
   links:
     - tm_server:tmserver
     - tm_database:tmdatabase
