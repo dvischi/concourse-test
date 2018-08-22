@@ -54,10 +54,10 @@ run:
         sleep 1
     done
 
-    docker-compose up -d tm_server
-    until [ "$(docker inspect -f {{.State.Running}} $(docker-compose ps -q tm_server))"=="true" ]; do
-        sleep 1;
-    done;
+    #docker-compose up -d tm_server
+    #until [ "$(docker inspect -f {{.State.Running}} $(docker-compose ps -q tm_server))"=="true" ]; do
+    #    sleep 1;
+    #done;
 
     #docker-compose up -d tm_client
     #until [ "$(docker inspect -f {{.State.Running}} $(docker-compose ps -q tm_client))"=="true" ]; do
@@ -68,6 +68,8 @@ run:
 
     docker-compose logs tm_database
     docker-compose logs tm_server
+
+    failed
 
     # Run tests
     #docker-compose run --rm tm_server /bin/bash -c "
